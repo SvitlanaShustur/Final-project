@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аналіз e-commerce платформи | Світлана Шустур-Решетник</title>
+    <style>
+        :root {
+            --primary: #1e40af; /* Глибокий синій */
+            --primary-light: #3b82f6;
+            --secondary: #64748b; /* Сірий */
+            --accent: #f97316; /* Помаранчевий */
+            --accent-light: #fff7ed;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --border: #cbd5e1;
+            --success: #10b981;
+            --info: #0ea5e9;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            margin: 0;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e3a8a 100%);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 { margin: 0; font-size: 2.2rem; letter-spacing: -0.025em; }
+        header p { opacity: 0.9; margin-top: 0.5rem; font-size: 1.1rem; }
+
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        section {
+            margin-bottom: 5rem;
+            scroll-margin-top: 6rem;
+        }
+
+        h2 { 
+            font-size: 2rem; 
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 { 
+            font-size: 1.4rem; 
+            margin-top: 0; 
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .card:hover { transform: translateY(-4px); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .code-container {
+            position: relative;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-left: 5px solid var(--accent);
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+
+        .img-container {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .img-real {
+            display: inline-block;
+            max-width: 90%;
+            max-height: 500px;
+            height: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .callout-warn { 
+            background: var(--accent-light); 
+            border-left: 6px solid var(--accent);
+            color: #9a3412;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+
+        .takeaways {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .takeaways h4 { 
+            margin-top: 0; 
+            color: var(--primary); 
+            font-size: 1.3rem;
+            text-transform: uppercase;
+        }
+
+        .takeaways li { margin-bottom: 0.75rem; }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 2rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        table th { 
+            background: var(--primary); 
+            color: white; 
+            padding: 1rem; 
+            text-align: left; 
+        }
+
+        table td { 
+            padding: 1rem; 
+            border-bottom: 1px solid var(--border); 
+            background: white;
+        }
+
+        table tr:last-child td { border-bottom: none; }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 4rem 1rem;
+            margin-top: 4rem;
+        }
+
+        footer a { color: var(--accent); font-weight: bold; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            nav { gap: 0.5rem; padding: 0.5rem; flex-wrap: wrap; }
+            h1 { font-size: 1.6rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Аналіз ефективності продажів e-commerce платформи</h1>
+    <p>Фінальний проєкт | Аналітик: Світлана Шустур-Решетник</p>
+</header>
+
+<nav>
+    <a href="#sql">SQL Queries</a>
+    <a href="#ecommerce">E-commerce Analysis</a>
+    <a href="#regression">Linear Regression</a>
+</nav>
+
+<div class="container">
+
+    <section id="sql">
+        <h2>1. SQL Queries Implementation</h2>
+        <div class="card">
+            <p>Метою SQL-частини проєкту було отримання та узагальнення даних із реляційної бази BigQuery для подальшої аналітичної обробки та візуалізації результатів.</p>
+        </div>
+
+        <div class="sql-block card">
+            <h3>Запит 1: Користувачі з Бразилії (2023)</h3>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>SELECT first_name, last_name, email
+FROM `bigquery-public-data.thelook_ecommerce.users`
+WHERE country = 'Brasil' 
+  AND created_at BETWEEN '2023-01-01' AND '2023-12-31';</code></pre>
+            </div>
+            <div class="img-container">
+                <img src="assets/Select_1.png" class="img-real" alt="Результат SQL запиту 1">
+            </div>
+        </div>
+
+        <div class="sql-block card">
+            <h3>Запит 2: Топ-категорії товарів</h3>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>SELECT category, COUNT(id) AS quantity
+FROM `bigquery-public-data.thelook_ecommerce.products`
+GROUP BY category
+ORDER BY quantity DESC;</code></pre>
+            </div>
+            <div class="img-container">
+                <img src="assets/Select_2.png" class="img-real" alt="Результат SQL запиту 2">
+            </div>
+        </div>
+
+        <div class="sql-block card">
+            <h3>Запит 3: Аналіз замовлень (JOIN)</h3>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>SELECT ord.order_id, usr.first_name, usr.last_name, ord.status
+FROM `bigquery-public-data.thelook_ecommerce.orders` AS ord
+JOIN `bigquery-public-data.thelook_ecommerce.users` AS usr ON usr.id = ord.user_id
+WHERE status = 'Shipped';</code></pre>
+            </div>
+            <div class="img-container">
+                <img src="assets/Select_3.png" class="img-real" alt="Результат SQL запиту 3">
+            </div>
+        </div>
+
+        <div class="sql-block card">
+            <h3>Запит 4: Найдорожчі замовлення</h3>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>SELECT order_id, user_id, ROUND(SUM(sale_price), 2) AS sum_orders
+FROM `bigquery-public-data.thelook_ecommerce.order_items`
+GROUP BY order_id, user_id
+ORDER BY sum_orders DESC
+LIMIT 10;</code></pre>
+            </div>
+            <div class="img-container">
+                <img src="assets/Select_4.png" class="img-real" alt="Результат SQL запиту 4">
+            </div>
+        </div>
+
+        <div class="sql-block card">
+            <h3>Запит 5: Географія покупців (>500 користувачів)</h3>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>SELECT COUNT(DISTINCT(id)) as user_count, country
+FROM `bigquery-public-data.thelook_ecommerce.users`
+GROUP BY country
+HAVING user_count > 500
+ORDER BY user_count DESC;</code></pre>
+            </div>
+            <div class="img-container">
+                <img src="assets/Select_5.png" class="img-real" alt="Результат SQL запиту 5">
+            </div>
+        </div>
+
+        <div class="takeaways">
+            <h4>Key Takeaways (SQL):</h4>
+            <ul>
+                Активність<li><strong>Бразилія:</strong> За 2023 рік зареєстровано 1 943 нових користувачів </li>
+                Популярніші категорії<li><strong>Категорії:</strong> Лідери — спідня білизна (2 363), джинси (1 999) та футболки (1 868). </li>
+                Логістика<li><strong>Логістика:</strong> Понад 37 500 замовлень мають статус 'Shipped' </li>
+                Найдорожчі замовлення<li><strong>Чек:</strong> Топ-10 замовлень мають вартість від 1 007 до 1 372 од </li>
+                Географія<li><strong>Ринки:</strong> Найбільші — Китай (34 003), США (22 738) та Бразилія (14 503) </li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="ecommerce">
+        <h2>2. E-commerce Dataset Analysis</h2>
+        
+        <div class="card">
+            <h3>Огляд проєкту та даних</h3>
+            Цей аналіз базується на наборі даних eCommerce-мережі Індії, що охоплює період з 2022 по вересень 2024 року[cite: 3]. Датасет містить інформацію про транзакції, клієнтські профілі, методи оплати та ефективність маркетингових інструментів. Обробка даних включала аналіз 29 776 транзакцій та 20 618 унікальних клієнтів.</p>
+        </div>
+
+        <div class="card">
+            <h3>Загальний стан бізнесу</h3>
+            <p>Загальний обсяг продажів: <strong>88,6 млн рупій</strong>.</p> 
+            <p> В 2024 рік (22,89 млн грн за 8.5 міс.), продажі залишаються стабільними</p> 
+            <p><strong>Ключові ринки:</strong> Бангалор та Пуна</p>
+            <p><strong>Критичний інсайт:</strong> Наша головна проблема — низька лояльність. Середній життєвий цикл клієнта складає лише 4,3 місяця
+            <div class="img-container">
+                <p><strong>Dashboard: Customer & Revenue Insights</strong></p>
+                <img src="assets/letter 1.png" class="img-real" alt="Дашборд">
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Клієнтський профіль</h3>
+            <p>Ядро аудиторії (70% доходу) — люди 18–45 років. Найвищий середній чек у категоріях Pet Care та Books</p>
+            <p><strong>Товари-лідери:</strong> Основними драйверами є Electronics, Clothing та Beauty and Health</p>
+            <p><strong>Цікавий інсайт:</strong>Середній чек найвищий у категорії Pet Care та Books</p>
+            <div class="img-container">
+                <img src="assets/letter 2.png" class="img-real" alt="Клієнти">
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Аналіз ефективності знижок</h3>
+            <p><strong>Відсутність стимулів:</strong> Знижки не корелюють зі зростанням кількості замовлень</p>
+
+            <p><strong>Дисконтна політика неефективна:</strong> знижки не підвищують кількість замовлень, а лише зменшують маржу</p>
+            <p><strong>Парадокс середнього чека</strong> Середній чек у замовленнях зі знижкою нижчий, ніж у замовленнях за повну вартість</p>
+            <div class="img-container">
+                <img src="assets/letter 3.png" class="img-real" alt="Знижки">
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Аналіз методів оплати</h3>
+            <p>Кредитні та дебетові картки — основні методи оплати </p>
+            <p>Кредитні картки лідирують (35,66 млн ₹) </p>
+            <p>UPI (цифрові гаманці) — зона росту для залучення молоді</p>
+            <div class="img-container">
+                <img src="assets/letter 4.png" class="img-real" alt="Оплата">
+            </div>
+        </div>
+
+        <div class="takeaways">
+            <h4>Стратегічні рекомендації:</h4>
+            <ul>
+                <li><strong>Лояльність:</strong> Відмовитися від загальних дисконтів на користь бонусної системи (за прикладом мережі 'Сільпо'). Бонуси на наступний місяць стимулюватимуть клієнтів повертатися.</li>
+                <li><strong>Retention:</strong> Впровадити email-маркетинг та ремаркетинг для клієнтів після першої покупки, щоб зменшити Lifetime</li>
+                <li><strong>Маркетинг:</strong> Впровадити точкові знижки лише для стимуляції повторних продажів..</li>
+                <li><strong>Дані:</strong> Для подальшого аналізу необхідно налагодити збір даних на рівні окремих продуктів, щоб чітко бачити товари-лідери та аутсайдери </li>
+            </ul>
+        </div>
+    </section>
+    <section id="regression">
+        <h2>3. Linear Regression Model</h2>
+
+        <div class="card">
+            <h3>Ціль створення моделі</h3>
+            <p>Метою побудови моделі лінійної регресії було визначення та аналіз факторів, що мають найбільш суттєвий вплив на суму продажів (Gross Amount). Це може дозволити зрозуміти, які характеристики клієнтів або параметри замовлень найкраще прогнозують обсяг продажів та оптимізувати маркетингові стратегії</p>
+        </div>
+
+        <div class="card">
+            <h3>Підготовка та інженерія ознак (Feature Engineering)</h3>
+            
+        <p><strong>Очищення даних:</strong> Видалено технічні ідентифікатори (CID, TID) та оброблено пропуски для усунення "шуму"</p>
+        <p><strong>Робота з часом:</strong> Дату покупки конвертовано у формат datetime, на основі чого створено змінні: рік, місяць та день тижня</p>
+        <p><strong>Кодування категорій:</strong> Стать, категорію товару, метод покупки та локацію трансформовано за допомогою One-Hot Encoding</p>
+        <p><strong>Обробка віку:</strong> Для груп "Age Group" створено числовий аналог</p>
+        </div>
+
+        <div class="card">
+             <h3>Побудова моделі та оцінка результатів</h3>
+        <p><strong>Структура моделі:</strong> Для навчання було сформовано матрицю ознак X та цільову змінну y (Gross Amount) з розподілом на навчальну та тестову вибірки - 80 на 20 </p>
+        <p><strong>Контроль витоку даних:</strong> Для забезпечення достовірності було перевірено взаємозв’язок між Gross/Net Amount та знижками, щоб уникнути штучного завищення точності (витоку даних) </p>
+        <p><strong>Метрики якост:</strong> Ефективність моделі оцінювалася за коефіцієнтом детермінації (R²) та середньою абсолютною помилкою (MAE)</p> 
+        
+         </p>   QR-код для перегляду реалізованої моделі </p>
+        <div class="img-container">
+            <img src="assets/Python.png" class="img-real" alt="Результати побудови моделі">
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Метрики та коефіцієнти</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Показник</th>
+                        <th>Значення</th>
+                        <th>Висновок</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>R² (Коефіцієнт детермінації)</strong></td>
+                        <td>0.048 </td>
+                        <td>Слабкий зв’язок; модель пояснює <5% варіації</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Коефіцієнт віку</strong></td>
+                        <td>1.97 </td>
+                        <td>Вплив віку мінімальний (~2 од. на декаду).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MAE (Середня помилка)</strong></td>
+                        <td>1420 рупій </td>
+                        <td>Середня абсолютна похибка прогнозу суми чека</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="takeaways">
+            <h4>Key Takeaways (ML):</h4>
+            <ul>
+                <li><strong>Стабільність:</strong> Поведінка клієнтів не залежить від віку</li>
+                <li><strong>Лінійність:</strong> Низький R² свідчить про необхідність нелінійних моделей або інших ознак</li>
+                <li><strong>Перспектива:</strong> Потрібен аналіз на рівні конкретних товарів</li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p>© 2024 Світлана Шустур-Решетник | Data Analytics Portfolio</p>
+    <p>Репозиторій проєкту: <a href="https://github.com/">GitHub</a></p>
+</footer>
+
+<script>
+    function copyCode(btn) {
+        const code = btn.nextElementSibling.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            const originalText = btn.innerText;
+            btn.innerText = "Copied!";
+            btn.style.background = "#22c55e";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = "#f97316";
+            }, 2000);
+        });
+    }
+</script>
+
+</body>
+</html>
