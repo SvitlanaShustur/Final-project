@@ -1,5 +1,5 @@
 # Звіт з аналізу ефективності продажів мережі eCommerce
-
+Посилання на Tableau https://public.tableau.com/views/E-commerce_17712497750510/Story1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
 ## Загальний огляд
 
 Об'єктом дослідження став датасет транзакцій індійського ритейлера за період з **01.01.2022 по 18.09.2024**.  
